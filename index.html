@@ -215,6 +215,9 @@ onchange="loadImage(event, 'img5')">
 🖨️ In phiếu bài tập
 
 </button>
+<button onclick="saveData()">
+💾 Lưu bài làm
+</button>
 
 </div>
 
@@ -231,6 +234,67 @@ function loadImage(event, id) {
     img.src = URL.createObjectURL(event.target.files[0]);
 
 }
+
+</script>
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+
+import { getDatabase, ref, set }
+from "https://www.gstatic.com/firebasejs/12.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC_LuKfDFRWyhFvNU5EVRovfWOKJ3VIBKM",
+  authDomain: "phieu-bai-tap-online.firebaseapp.com",
+  databaseURL: "https://phieu-bai-tap-online-default-rtdb.firebaseio.com",
+  projectId: "phieu-bai-tap-online",
+  storageBucket: "phieu-bai-tap-online.firebasestorage.app",
+  messagingSenderId: "880090397479",
+  appId: "1:880090397479:web:5bab797debd7aa63948702"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase(app);
+
+/* Hàm lưu dữ liệu */
+
+window.saveData = function(){
+
+  let texts = [];
+
+  document.querySelectorAll("textarea")
+  .forEach(t => {
+
+    texts.push(t.value);
+
+  });
+
+  let id = "hs_" + Date.now();
+
+  set(
+    ref(db, "duLieu/" + id),
+    {
+      text: texts
+    }
+  )
+  .then(() => {
+
+    alert("✅ Đã lưu thành công!");
+
+  })
+  .catch((error) => {
+
+    alert("❌ Lỗi khi lưu: " + error);
+
+    console.error(error);
+
+  });
+
+}
+
+
 
 </script>
 
