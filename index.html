@@ -290,6 +290,46 @@ window.saveData = function(){
     console.error(error);
 
   });
+import { getDatabase, ref, set, onValue }
+from "https://www.gstatic.com/firebasejs/12.12.0/firebase-database.js";
+
+
+// LOAD dữ liệu khi mở trang
+
+function loadData(){
+
+  const dataRef = ref(db, "duLieu");
+
+  onValue(dataRef, (snapshot) => {
+
+    let data = snapshot.val();
+
+    if(!data) return;
+
+    let lastKey = Object.keys(data).pop();
+
+    let lastData = data[lastKey];
+
+    let i = 0;
+
+    document.querySelectorAll("textarea")
+    .forEach(t => {
+
+      if(lastData.text[i]){
+
+        t.value = lastData.text[i];
+
+      }
+
+      i++;
+
+    });
+
+  });
+
+}
+
+loadData();
 
 }
 
